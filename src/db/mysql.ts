@@ -1,26 +1,25 @@
 import mysql from "mysql2/promise";
 import dotenv from "dotenv";
+import path from "path";
 
-const envFIle =
-  process.env.NODE_ENV === "production" ? ".env.production" : "env.development";
-
-dotenv.config();
+const envPath = path.resolve(
+  process.cwd(),
+  `.env.${process.env.NODE_ENV || "development"}`
+);
+dotenv.config({ path: envPath });
 
 const dbConfig = {
   host: process.env.HOSTNAME as string,
-  port: parseInt(process.env.PORT || "3000") as number,
-  user: process.env.USERNAME as string,
+  port: parseInt(process.env.DB_PORT || "3006") as number,
+  user: process.env.DB_USERNAME as string,
   password: process.env.PASSWORD as string,
   database: process.env.DB_NAME as string,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
-  acquireTimeout: 60000,
-  timeout: 60000,
 };
 
 export const pool = mysql.createPool(dbConfig);
-console.log("🚀 ~ pool:", pool);
 
 export const testConnection = async (): Promise<void> => {
   try {

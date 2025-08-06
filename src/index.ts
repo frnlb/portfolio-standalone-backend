@@ -1,14 +1,24 @@
 import dotenv from "dotenv";
 import express from "express";
 import type { Express, Request, Response } from "express";
+import path from "path";
+import { testConnection } from "./db/mysql.js";
 
-dotenv.config();
+const envPath = path.resolve(
+  process.cwd(),
+  `.env.${process.env.NODE_ENV || "development"}`
+);
 
+dotenv.config({ path: envPath });
 const app: Express = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 
-app.use(express.json());
+testConnection();
+
+app.get("/", (req: Request, res: Response) => {
+  res.send("Hola fran!");
+});
 
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log(`Example app listening on port ${port}`);
 });
