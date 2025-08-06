@@ -2,8 +2,9 @@
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
-    "module": "commonjs",
+    "module": "nodenext",
     "target": "es2022",
+    "moduleResolution": "nodenext",
     "types": [],
     "sourceMap": true,
     "noUncheckedIndexedAccess": true,

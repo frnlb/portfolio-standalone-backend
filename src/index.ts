@@ -1,32 +1,17 @@
-import express = require("express");
-import dotenv = require("dotenv");
+import dotenv from "dotenv";
+import express from "express";
 import type { Express, Request, Response } from "express";
-import mysql = require("mysql2/promise");
+import { getUsers } from "./controllers/users.js";
+
+dotenv.config();
+
 const app: Express = express();
-const envPath =
-  process.env.NODE_ENV === "production"
-    ? ".env.production"
-    : ".env.development";
-dotenv.config({ path: envPath });
-const PORT = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
-const testDbConnection = async () => {
-  try {
-    const connection = await mysql.createConnection(
-      process.env.DATABASE_URL as string
-    );
-    await connection.end();
-    console.log("databse connection successful");
-  } catch (error) {
-    console.error("Database connection failed: ", error);
-  }
-};
+app.use(express.json());
 
-app.get("/", (req, res, next) => {
-  res.send("hello fran");
-});
+app.get("/users", getUsers);
 
-app.listen(PORT, () => {
-  console.log(`[server]: Server is running at http://localhost:${PORT}`);
-  testDbConnection();
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
