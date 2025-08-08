@@ -1,12 +1,12 @@
 import mysql from "mysql2/promise";
-import dotenv from "dotenv";
+// import dotenv from "dotenv";
 import path from "path";
 
-const envPath = path.resolve(
-  process.cwd(),
-  `.env.${process.env.NODE_ENV || "development"}`
-);
-dotenv.config({ path: envPath });
+// const envPath = path.resolve(
+//   process.cwd(),
+//   `.env.${process.env.NODE_ENV || "development"}`
+// );
+// dotenv.config({ path: envPath });
 
 const dbConfig = {
   host: process.env.HOSTNAME as string,
