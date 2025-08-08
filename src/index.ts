@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import express from "express";
+import cors from "cors";
 import type { Express, Request, Response } from "express";
 import path from "path";
 import { testConnection } from "./db/mysql.js";
@@ -11,6 +12,7 @@ const envPath = path.resolve(
 
 dotenv.config({ path: envPath });
 const app: Express = express();
+app.use(cors());
 const port = process.env.PORT;
 
 testConnection();
