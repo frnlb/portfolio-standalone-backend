@@ -3,17 +3,30 @@ import cors from "cors";
 import type { Express, Request, Response } from "express";
 import { testConnection } from "./db/index.js";
 import { getUsers } from "./controllers/users.js";
-const imagesPath = process.env.IMAGES_PATH;
-import fs from "fs/promises";
-import path from "path";
+import locationsRouter from "./routes/locations.ts";
 
+const imagesPath = process.env.IMAGES_PATH;
 const router = Router();
+
+router.get("/public", (req: Request, res: Response) => {
+  res.send("this is you in public");
+});
 
 const app: Express = express();
 app.use(cors());
+app.use(express.json());
 if (imagesPath) {
   app.use("/images", express.static(imagesPath));
 }
+
+app.use((req, res, next) => {
+  console.log("req.baseUrl: ", req.baseUrl);
+  console.log("req.body ", req.body);
+  next();
+});
+
+app.use("/locations", locationsRouter);
+
 const port = process.env.PORT;
 
 testConnection();
@@ -21,12 +34,6 @@ testConnection();
 app.get("/", (req: Request, res: Response) => {
   res.send("Hola fran!");
 });
-
-// app.get("/users/:id", async (req, res) => {
-//   const { id } = req.params;
-//   const user = await getUserById(id);
-//   res.send(user);
-// });
 
 app.get("/users", async (req, res) => {
   await getUsers(req, res);
@@ -36,7 +43,9 @@ app.get("/users/:id", (req: Request, res: Response) => {
   res.send("users");
 });
 
-app.post("/api/images/sync");
+app.post("/api/images/sync", (req: Request, res: Response) => {
+  res.send("posting");
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
