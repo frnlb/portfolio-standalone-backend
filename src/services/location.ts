@@ -25,15 +25,16 @@ export class LocationService {
   static async createLocation(location: Location) {
     const { name, description, country, region, latitude, longitude } =
       location;
-    const parsedLocation: Location = {
+    let parsedLocation: Location = {
       ...location,
-      latitude: latitude ? Number(latitude) : undefined,
-      longitude: longitude ? Number(longitude) : undefined,
     };
-    console.log(
-      "🚀 ~ LocationService ~ createLocation ~ parsedLocation:",
-      parsedLocation
-    );
+    if (latitude && longitude) {
+      parsedLocation = {
+        ...parsedLocation,
+        latitude: Number(latitude),
+        longitude: Number(longitude),
+      };
+    }
 
     const createdLocation = await LocationModel.createLocation(parsedLocation);
     return "";
