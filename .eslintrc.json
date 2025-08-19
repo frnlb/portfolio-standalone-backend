@@ -17,6 +17,7 @@
     ],
     "no-undef": "error",
     "prefer-const": "error",
-    "no-console": "warn"
+    "no-console": "warn",
+    "max-len": ["warn", { "code": 80 }]
   }
 }

@@ -10,3 +10,17 @@ export interface ImageData {
   last_modified_date: string;
   location_id: string;
 }
+
+export interface OriginalImageFileData {
+  filename: ImageData["filename"];
+  original_size_bytes: ImageData["original_size_bytes"];
+  file_path: ImageData["file_path"];
+}
+
+export interface ImageMetadata {
+  filename: ImageData["filename"];
+  sizeBytes:
+    | ImageData["original_size_bytes"]
+    | ImageData["optimized_size_bytes"];
+  filePath: ImageData["file_path"] | ImageData["optimized_file_path"];
+}

@@ -1,0 +1,6 @@
+//update table with new column
+ALTER TABLE table_name 
+ADD COLUMN column_name VARCHAR(255) NULL;
+
+//update table iamges with new column optimized_file_path
+ALTER TABLE images ADD COLUMN optimized_file_path VARCHAR(255) NULL;

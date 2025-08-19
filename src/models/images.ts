@@ -1,6 +1,6 @@
 import type { FieldPacket, ResultSetHeader } from "mysql2";
 import { pool } from "../db/index.js";
-import type { ImageData } from "../types/images.ts";
+import type { ImageData, OriginalImageFileData } from "../types/images.ts";
 /**
  * export interface ImageData {
   image_id: string;
@@ -29,65 +29,55 @@ export class ImagesModel {
   }
 
   static async getImageByFilename(filename: ImageData["filename"]) {
-    const query = `SELECT * FROM images WHERE filename=${filename}`;
+    const query = `SELECT * FROM images WHERE filename="${filename}"`;
     const [results, fields] = await pool.query(query);
     return results;
   }
 
-  //   static async updateImageDescriptionById(image: Partial<ImageData>) {
-  // const {
-  //   image_id,
-  //   filename,
-  //   description,
-  //   original_size_bytes,
-  //   optimized_size_bytes,
-  //   file_path,
-  //   optimized_file_path,
-  //   upload_date,
-  //   last_modified_date,
-  //   location_id,
-  // } = image;
-
-  //     const query = `UPDATE images SET description=${description} `;
-  //   }
-
-  static async updateImagesOptimizedDataByFilename(
-    filename: ImageData["filename"],
-    optimized_size_bytes: ImageData["optimized_size_bytes"]
-  ) {
-    const query = `UPDATE images SET optimized_size_bytes=${optimized_size_bytes} WHERE filename=${filename}`;
-    try {
-      const [result] = (await pool.query(query)) as [
-        ResultSetHeader,
-        FieldPacket[]
-      ];
-      if (result.affectedRows > 0) {
-        return {
-          success: true,
-          message: `Updated image ${filename}`,
-          details: result,
-        };
-      } else {
-        return {
-          success: false,
-          message: `Error. Image ${filename} not updated`,
-        };
-      }
-    } catch (error) {
-      console.error(`Error while trying to update ${filename}: ${error}`);
-      throw error;
-    }
-  }
-
-  static async updateImageByFilename(filename: ImageData["filename"]) {}
-
   static async addImagesData(valuesData: string) {
     try {
-      const query = `INSERT INTO images (filename, original_size_bytes, file_path) VALUES ${valuesData}`;
+      const query = `INSERT INTO images (filename, original_size_bytes, 
+      file_path) VALUES ${valuesData}`;
       const data = await pool.query(query);
       return data;
     } catch (error) {
       console.error("Error while executing addImagesData: ", error);
+      throw error;
+    }
+  }
+
+  static async addOriginalImagesFileData(originalFilesData: string) {
+    if (originalFilesData === "") {
+      return "No original files data string";
+    }
+    const query = `INSERT INTO images 
+    (filename, file_path, original_size_bytes)
+    VALUES ${originalFilesData};`;
+    try {
+      const data = await pool.query(query);
+      return data;
+    } catch (error) {
+      console.error(`Error at addImagesFileData - models:
+        OriginalFilesData: ${originalFilesData}\n
+        Error: ${error}`);
+      throw error;
+    }
+  }
+
+  static async updateImageOptimizedDataByFilename(
+    filename: ImageData["filename"],
+    optimized_size_bytes: ImageData["optimized_size_bytes"],
+    optimized_file_path: ImageData["optimized_file_path"]
+  ) {
+    try {
+      const query = `UPDATE images SET optimized_size_bytes=${optimized_size_bytes}, 
+      optimized_file_path="${optimized_file_path}" WHERE filename="${filename}"`;
+      const data = await pool.query(query);
+      return data;
+    } catch (error) {
+      console.error(
+        `Error while trying to update file\n${filename}\nOptimizedSizeBytes: ${optimized_size_bytes}\nOptimizedFilePath: ${optimized_file_path}`
+      );
       throw error;
     }
   }
