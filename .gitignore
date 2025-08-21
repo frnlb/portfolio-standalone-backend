@@ -19,3 +19,8 @@ pnpm-debug.log*
 *.swo
 .DS_Store
 Thumbs.db
+/src/generated/prisma
+
+/../../../../../../../src/prisma/generated/prisma
+
+/prisma/src/prisma/generated/prisma
