@@ -17,15 +17,17 @@
     "lint:fix": "eslint src/**/*.ts --fix",
     "prisma:migrate:prod": "tsx --env-file=.env.production node --loader tsx node_modules/.bin/prisma migrate deploy",
     "prisma:migrate:dev": "tsx --env-file=.env.development node --loader tsx node_modules/.bin/prisma migrate deploy",
-    "prisma:generate:prod": "tsx --env-file=.env.production node --loader tsx node_modules/.bin/prisma generate",
+    "prisma:generate:prod": "tsx --env-file=.env.production node_modules/.bin/prisma generate",
+    "prisma:generate:dev": "node_modules/.bin/prisma generate",
     "prisma:pull:dev": "DATABASE_URL=$(cat .env.development | grep DATABASE_URL | cut -d '=' -f2 | tr -d '\"') npx prisma db pull",
     "prisma:pull:prod": "DATABASE_URL=$(cat .env.production | grep DATABASE_URL | cut -d '=' -f2 | tr -d '\"') npx prisma db pull"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.14.0",
+  "packageManager": "pnpm@10.15.0",
   "dependencies": {
+    "@prisma/client": "6.14.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "mysql2": "^3.14.3"
@@ -39,7 +41,6 @@
     "@typescript-eslint/parser": "^8.39.0",
     "eslint": "^9.32.0",
     "jest": "^30.0.5",
-    "nodemon": "^3.1.10",
     "prisma": "^6.14.0",
     "sharp": "^0.34.3",
     "ts-jest": "^29.4.0",

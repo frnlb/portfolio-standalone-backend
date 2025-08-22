@@ -1,4 +1,3 @@
-import type { FieldPacket, ResultSetHeader } from "mysql2";
 import { pool } from "../db/index.js";
 import type { ImageData, OriginalImageFileData } from "../types/images.ts";
 /**
