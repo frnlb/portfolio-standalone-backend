@@ -2,7 +2,6 @@ import express, { Router } from "express";
 import cors from "cors";
 import type { Express, Request, Response } from "express";
 import { testConnection } from "./db/index.js";
-import { getUsers } from "./controllers/users.js";
 import usersRouter from "./routes/users.ts";
 import locationsRouter from "./routes/locations.ts";
 
@@ -21,33 +20,15 @@ if (imagesPath) {
 }
 
 app.use((req, res, next) => {
-  console.log("req.baseUrl: ", req.baseUrl);
-  console.log("req.body ", req.body);
   next();
 });
 
 app.use("/locations", locationsRouter);
-app.use("users", usersRouter);
+app.use("/users", usersRouter);
 
 const port = process.env.PORT;
 
 testConnection();
-
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hola fran!");
-});
-
-app.get("/users", async (req, res) => {
-  await getUsers(req, res);
-});
-
-app.get("/users/:id", (req: Request, res: Response) => {
-  res.send("users");
-});
-
-app.post("/api/images/sync", (req: Request, res: Response) => {
-  res.send("posting");
-});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

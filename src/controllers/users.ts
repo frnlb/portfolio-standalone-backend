@@ -16,6 +16,10 @@ export const getUsers = async (req: Request, res: Response) => {
   }
 };
 
+export const createUserAuth = async (req: Request, res: Response) => {
+  console.log(`request inside createUserAuth ${req}`);
+};
+
 export const getUserById = async (req: Request, res: Response) => {};
 export const createUser = async (req: Request, res: Response) => {
   console.log("🚀 ~ createUser ~ res:", res);
