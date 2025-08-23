@@ -24,3 +24,5 @@ Thumbs.db
 /../../../../../../../src/prisma/generated/prisma
 
 /prisma/src/prisma/generated/prisma
+
+/generated/prisma

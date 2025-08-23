@@ -3,6 +3,7 @@ import cors from "cors";
 import type { Express, Request, Response } from "express";
 import { testConnection } from "./db/index.js";
 import { getUsers } from "./controllers/users.js";
+import usersRouter from "./routes/users.ts";
 import locationsRouter from "./routes/locations.ts";
 
 const imagesPath = process.env.IMAGES_PATH;
@@ -26,6 +27,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/locations", locationsRouter);
+app.use("users", usersRouter);
 
 const port = process.env.PORT;
 
