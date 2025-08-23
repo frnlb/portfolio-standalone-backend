@@ -11,7 +11,7 @@ import {
 const router = Router();
 
 router.post("/", createUser);
-router.post("/auth", createUserAuth);
+router.post("/login", createUserAuth);
 router.get("/", getUsers);
 router.get("/:id", getUserById);
 router.put("/:id", updateUserById);

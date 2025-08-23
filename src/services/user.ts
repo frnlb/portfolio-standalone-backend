@@ -1,3 +1,4 @@
+import { UserModel } from "../models/user.ts";
 import { UserRepository } from "../repositories/users.ts";
 import type { User } from "../types/users.ts";
 
@@ -10,6 +11,18 @@ export class UserService {
       );
     }
     const result = await UserRepository.createUser(user);
+    return result;
+  }
+
+  static async createUserAuth(user: User) {
+    let { rights } = user;
+    if (!rights) {
+      rights = "user";
+    }
+    const [result] = await UserModel.createUserAuth(user);
+    if (result && result.affectedRows) {
+      return result.affectedRows;
+    }
     return result;
   }
 

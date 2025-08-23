@@ -17,19 +17,19 @@ export const getUsers = async (req: Request, res: Response) => {
 };
 
 export const createUserAuth = async (req: Request, res: Response) => {
-  console.log(`request inside createUserAuth ${req}`);
+  const user = req.body;
+  const result = await UserService.createUserAuth(user);
+  if (!result) {
+    res.status(400);
+    res.send("Error in createUserAuth service");
+  } else {
+    res.status(200);
+    res.send(`Created ${result} new records`);
+  }
+  return result;
 };
 
 export const getUserById = async (req: Request, res: Response) => {};
-export const createUser = async (req: Request, res: Response) => {
-  console.log("🚀 ~ createUser ~ res:", res);
-  console.log("🚀 ~ createUser ~ req:", req);
-};
-export const deleteUserById = async (req: Request, res: Response) => {
-  console.log("🚀 ~ createUser ~ res:", res);
-  console.log("🚀 ~ createUser ~ req:", req);
-};
-export const updateUserById = async (req: Request, res: Response) => {
-  console.log("🚀 ~ createUser ~ res:", res);
-  console.log("🚀 ~ createUser ~ req:", req);
-};
+export const createUser = async (req: Request, res: Response) => {};
+export const deleteUserById = async (req: Request, res: Response) => {};
+export const updateUserById = async (req: Request, res: Response) => {};
