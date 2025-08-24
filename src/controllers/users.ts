@@ -58,23 +58,3 @@ export const login = async (req: Request, res: Response) => {
     res.status(404);
   }
 };
-
-// export const getUserByEmail = async (req: Request, res: Response) => {
-//   const { email, password } = req.body;
-//   console.log("🚀 ~ getUserByEmail ~ password:", password);
-//   console.log("email:", email);
-//   try {
-//     const result = await UserService.getUserByEmail({ email, password });
-//     return result;
-//   } catch (error) {
-//     const errorMessage = (error as Error).message;
-//     console.error(error);
-//     res.send(errorMessage);
-//     res.status(404);
-//   }
-// };
-
-export const getUserById = async (req: Request, res: Response) => {};
-export const createUser = async (req: Request, res: Response) => {};
-export const deleteUserById = async (req: Request, res: Response) => {};
-export const updateUserById = async (req: Request, res: Response) => {};

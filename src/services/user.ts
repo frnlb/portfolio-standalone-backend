@@ -1,7 +1,9 @@
 import { UserModel } from "../models/user.ts";
 import { UserRepository } from "../repositories/users.ts";
 import type { User } from "../types/users.ts";
-import type { ResultSetHeader } from "mysql2";
+import bcrypt from "bcrypt";
+
+const SALT_ROUNDS = 10;
 
 export class UserService {
   static async createUser(user: User) {
@@ -16,11 +18,20 @@ export class UserService {
   }
 
   static async createUserAuth(user: User) {
-    let { rights } = user;
+    let { rights, password, email, username } = user;
     if (!rights) {
       rights = "reader";
     }
-    const result = await UserModel.createUserAuth(user);
+    if (!password || !email || !username) {
+      throw new Error(`Username: ${username}, email: ${email}
+        and password are mandatory fields`);
+    }
+    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+    const hashedUser = {
+      ...user,
+      password: hashedPassword,
+    };
+    const result = await UserModel.createUserAuth(hashedUser);
     return result;
   }
 
