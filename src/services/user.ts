@@ -40,20 +40,47 @@ export class UserService {
     if (!email || !password) {
       throw new Error(`Email: ${email} or password are mandatory fields`);
     }
-    const [result] = await UserModel.login(email, password);
-    return result;
+    const userRecord = await this.getUserByEmail(email);
+    if (!userRecord || userRecord.length === 0) {
+      throw new Error(`No user found with this email: ${email}`);
+    }
+
+    const {
+      user_id,
+      username,
+      email: usermail,
+      rights,
+    } = userRecord[0] as User;
+
+    const storedHash = userRecord[0]?.password;
+    if (!storedHash) {
+      throw new Error(`Could not retrieve user's password`);
+    }
+
+    const isMatch = await bcrypt.compare(password, storedHash);
+    if (isMatch) {
+      return { message: `User ${username} Login successful!` };
+    } else {
+      throw new Error("Invalid email or password");
+    }
   }
 
   static async getUserByEmail(email: User["email"]) {
     if (!email) {
       throw new Error(`Email is a required field`);
     }
-    const results = await UserModel.getUserByEmail(email);
-    return results;
+    const result = await UserModel.getUserByEmail(email);
+    return result;
   }
 
+  //With repository
+  // static async getUsers() {
+  //   const result = await UserRepository.getUsers();
+  //   return result;
+  // }
+
   static async getUsers() {
-    const result = await UserRepository.getUsers();
+    const result = await UserModel.getUsers();
     return result;
   }
 }

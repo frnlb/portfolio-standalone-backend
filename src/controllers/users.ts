@@ -55,6 +55,6 @@ export const login = async (req: Request, res: Response) => {
   } catch (error) {
     const errorMessage = (error as Error).message;
     console.error(errorMessage);
-    res.status(404);
+    res.status(401);
   }
 };
