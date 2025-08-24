@@ -18,15 +18,16 @@ export const getUsers = async (req: Request, res: Response) => {
 
 export const createUserAuth = async (req: Request, res: Response) => {
   const user = req.body;
-  const result = await UserService.createUserAuth(user);
-  if (!result) {
-    res.status(400);
-    res.send("Error in createUserAuth service");
-  } else {
+  try {
+    const result = await UserService.createUserAuth(user);
     res.status(200);
     res.send(`Created ${result} new records`);
+  } catch (error) {
+    const errorMessage = (error as Error).message;
+    res.status(500);
+    res.send(errorMessage);
+    console.error(`Error in createUserAuth controller ${error}`);
   }
-  return result;
 };
 
 export const getUserById = async (req: Request, res: Response) => {};

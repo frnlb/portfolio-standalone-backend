@@ -20,9 +20,6 @@ export class UserService {
       rights = "user";
     }
     const [result] = await UserModel.createUserAuth(user);
-    if (result && result.affectedRows) {
-      return result.affectedRows;
-    }
     return result;
   }
 

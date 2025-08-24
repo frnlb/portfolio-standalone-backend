@@ -12,14 +12,16 @@ export class UserModel {
     const { username, email, password, rights } = user;
     const query = `INSERT INTO users (username, email, password, rights)
     VALUES ("${username}", "${email}", "${password}", "${rights}");`;
+    let results;
     try {
-      const results = await pool.execute(query);
+      results = await pool.execute(query);
       return results;
     } catch (error) {
-      console.error(`Error in createUserAuth
-          user: ${user}
-          error: ${error}
+      console.error(`Error in createUserAuth models
+         User: ${user.username}
+         Email: ${user.email}
           `);
+      throw error;
     }
   }
 }
