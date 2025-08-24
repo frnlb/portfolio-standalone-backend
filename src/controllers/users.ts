@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { UserService } from "../services/user.ts";
 import type { User } from "../types/users.ts";
+import type { ResultSetHeader } from "mysql2";
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
@@ -17,11 +18,12 @@ export const getUsers = async (req: Request, res: Response) => {
 };
 
 export const createUserAuth = async (req: Request, res: Response) => {
-  const user = req.body;
+  const user = req.body as User;
   try {
     const result = await UserService.createUserAuth(user);
+    const affectedRows = (result as ResultSetHeader).affectedRows;
     res.status(200);
-    res.send(`Created ${result} new records`);
+    res.send(`Created ${affectedRows} new records`);
   } catch (error) {
     const errorMessage = (error as Error).message;
     res.status(500);
@@ -29,6 +31,48 @@ export const createUserAuth = async (req: Request, res: Response) => {
     console.error(`Error in createUserAuth controller ${error}`);
   }
 };
+
+export const getUserByEmail = async (req: Request, res: Response) => {
+  const { email } = req.body;
+  try {
+    const result = await UserService.getUserByEmail(email);
+    return result;
+  } catch (error) {
+    const errorMessage = (error as Error).message;
+    console.error(error);
+    res.send(errorMessage);
+    res.status(404);
+  }
+};
+
+export const login = async (req: Request, res: Response) => {
+  const user = req.body;
+  try {
+    const result = await UserService.login(user);
+    res.send(result);
+    res.status(200);
+    return result;
+  } catch (error) {
+    const errorMessage = (error as Error).message;
+    console.error(errorMessage);
+    res.status(404);
+  }
+};
+
+// export const getUserByEmail = async (req: Request, res: Response) => {
+//   const { email, password } = req.body;
+//   console.log("🚀 ~ getUserByEmail ~ password:", password);
+//   console.log("email:", email);
+//   try {
+//     const result = await UserService.getUserByEmail({ email, password });
+//     return result;
+//   } catch (error) {
+//     const errorMessage = (error as Error).message;
+//     console.error(error);
+//     res.send(errorMessage);
+//     res.status(404);
+//   }
+// };
 
 export const getUserById = async (req: Request, res: Response) => {};
 export const createUser = async (req: Request, res: Response) => {};
